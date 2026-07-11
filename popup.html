@@ -1,0 +1,157 @@
+<!DOCTYPE html>
+<html dir="rtl" lang="he">
+<head>
+  <meta charset="UTF-8">
+  <link rel="stylesheet" href="popup.css">
+  <link href="https://fonts.googleapis.com/css2?family=Rubik:wght@400;500;600;700&display=swap" rel="stylesheet">
+  <title>SCE Assignment Tracker</title>
+</head>
+<body>
+  <div class="app-container">
+
+    <!-- Header -->
+    <header class="app-header">
+      <div class="header-right">
+        <span class="header-icon">📚</span>
+        <div>
+          <h1>עבודות הגשה</h1>
+          <span id="userName" class="user-name"></span>
+        </div>
+      </div>
+      <div class="header-left">
+        <button id="refreshBtn" class="icon-btn" title="רענן">🔄</button>
+        <button id="settingsBtn" class="icon-btn" title="הגדרות">⚙️</button>
+      </div>
+    </header>
+
+    <div class="nav-tabs">
+      <button class="nav-tab active" id="tabAssignments">📋 עבודות</button>
+      <button class="nav-tab" id="tabWorkload">📈 עומס שבועי</button>
+    </div>
+
+    <!-- Main View (Assignments) -->
+    <div id="mainView">
+      <!-- Stats Bar -->
+      <div class="stats-bar">
+      <div class="stat-item stat-pending">
+        <span class="stat-number" id="pendingCount">0</span>
+        <span class="stat-label">ממתינות</span>
+      </div>
+      <div class="stat-item stat-urgent">
+        <span class="stat-number" id="urgentCount">0</span>
+        <span class="stat-label">דחופות</span>
+      </div>
+      <div class="stat-item stat-updated">
+        <span class="stat-number" id="lastUpdated">--</span>
+        <span class="stat-label">עודכן</span>
+      </div>
+    </div>
+
+    <!-- Course Progress -->
+    <div id="courseProgressSection" class="course-progress-section" style="display:none;">
+      <!-- populated dynamically -->
+    </div>
+
+    <!-- Filter Bar -->
+    <div class="filter-bar">
+      <select id="courseFilter" class="filter-select">
+        <option value="all">כל הקורסים</option>
+        <!-- populated dynamically -->
+      </select>
+      <select id="sortBy" class="filter-select">
+        <option value="duedate">מיון לפי תאריך</option>
+        <option value="urgency">מיון לפי דחיפות</option>
+        <option value="course">מיון לפי קורס</option>
+      </select>
+    </div>
+
+    <!-- Assignment List -->
+    <div id="assignmentList" class="assignment-list">
+      <!-- populated dynamically -->
+    </div>
+
+    <!-- Loading State -->
+    <div id="loadingState" class="state-container" style="display:none;">
+      <div class="loader-ring"></div>
+      <p>טוען עבודות...</p>
+    </div>
+
+    <!-- Empty State -->
+    <div id="emptyState" class="state-container" style="display:none;">
+      <span class="empty-icon">🎉</span>
+      <h2>הכל הוגש!</h2>
+      <p>אין עבודות הגשה ממתינות</p>
+    </div>
+
+    <!-- Login Required State -->
+    <div id="loginRequiredState" class="state-container" style="display:none;">
+      <span class="empty-icon">🔒</span>
+      <h2>החיבור נותק</h2>
+      <p>כדי לרענן את החיבור למודל, עליך לפתוח את האתר ולהתחבר.</p>
+      <button id="openMoodleBtn" class="retry-btn" style="margin-top: 20px;">פתח את Moodle</button>
+    </div>
+
+    <!-- Error State -->
+    <div id="errorState" class="state-container" style="display:none;">
+      <span class="empty-icon">😵</span>
+      <h2>שגיאה</h2>
+      <p id="errorText"></p>
+      <button id="retryBtn" class="retry-btn">נסה שוב</button>
+    </div>
+    </div> <!-- /mainView -->
+
+    <!-- Workload View -->
+    <div id="workloadView" style="display:none;">
+      <div class="workload-chart" id="workloadChart">
+        <!-- populated dynamically -->
+      </div>
+      <p style="text-align:center; color:var(--text-secondary); font-size:12px; margin-top:20px;">
+        מספר עבודות ההגשה שנופלות בכל שבוע
+      </p>
+    </div>
+
+    <!-- Settings Panel (hidden by default) -->
+    <div id="settingsPanel" class="settings-panel" style="display:none;">
+      <h2>⚙️ הגדרות התראות</h2>
+      <div class="setting-row">
+        <label class="toggle-label">
+          <span>הפעל התראות</span>
+          <input type="checkbox" id="notifToggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+      </div>
+      <div class="setting-row">
+        <label class="toggle-label">
+          <span>🧠 תזכורות חכמות (אוטומטי)</span>
+          <input type="checkbox" id="smartRemindersToggle" checked>
+          <span class="toggle-slider"></span>
+        </label>
+        <p class="setting-hint">מתאים תזכורות לפי הזמן שנשאר להגשה</p>
+      </div>
+      <div id="manualRemindersBlock">
+        <div class="setting-row">
+        <label>תזכורת 24 שעות לפני
+          <input type="checkbox" id="remind24h" checked>
+        </label>
+      </div>
+      <div class="setting-row">
+        <label>תזכורת 6 שעות לפני
+          <input type="checkbox" id="remind6h" checked>
+        </label>
+      </div>
+      <div class="setting-row">
+        <label>תזכורת שעה לפני
+          <input type="checkbox" id="remind1h" checked>
+        </label>
+      </div>
+      </div>
+      <button id="saveSettingsBtn" class="save-settings-btn">שמור</button>
+      <button id="closeSettingsBtn" class="close-settings-btn">סגור</button>
+    </div>
+
+  </div>
+
+  <script src="utils.js"></script>
+  <script src="popup.js"></script>
+</body>
+</html>

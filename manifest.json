@@ -1,0 +1,39 @@
+{
+  "manifest_version": 3,
+  "name": "SCE Assignment Tracker",
+  "version": "1.0.0",
+  "description": "עוקב אחרי עבודות הגשה ב-Moodle של מכללת סמי שמעון",
+  "permissions": [
+    "storage",
+    "alarms",
+    "notifications",
+    "scripting"
+  ],
+  "host_permissions": [
+    "https://moodle.sce.ac.il/*"
+  ],
+  "background": {
+    "service_worker": "background.js"
+  },
+  "action": {
+    "default_popup": "popup.html",
+    "default_icon": {
+      "16": "icons/icon16.png",
+      "48": "icons/icon48.png",
+      "128": "icons/icon128.png"
+    }
+  },
+  "content_scripts": [
+    {
+      "matches": ["https://moodle.sce.ac.il/*"],
+      "css": ["content.css"],
+      "js": ["utils.js", "content.js"],
+      "run_at": "document_idle"
+    }
+  ],
+  "icons": {
+    "16": "icons/icon16.png",
+    "48": "icons/icon48.png",
+    "128": "icons/icon128.png"
+  }
+}
